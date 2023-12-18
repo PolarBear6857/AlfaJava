@@ -38,23 +38,30 @@ public class TimetableGenerator {
                 timetable[day * 10 + 4] = -1;
             }
 
-            for (int hour = 0; hour < 10 && !availableSubjects.isEmpty(); hour++) {
-                byte code = availableSubjects.remove(0);
+            for (int hour = 0; hour < 10; hour++) {
+                // Shuffle available subjects for each hour to get randomness
+                Collections.shuffle(availableSubjects);
 
-                // Check constraints for consecutive hours
-                if (!consecutiveHoursConstraintSatisfied(code, timetable, day, hour)) {
-                    availableSubjects.add(code);
-                    continue;
-                }
+                for (Byte code : availableSubjects) {
+                    // Check constraints for consecutive hours
+                    if (consecutiveHoursConstraintSatisfied(code, timetable, day, hour)) {
+                        timetable[day * 10 + hour] = code;
+                        subjectCodeMap.get(code).decrementHours();
 
-                timetable[day * 10 + hour] = code;
-                subjectCodeMap.get(code).decrementHours();
+                        // Check if lunch break needs to be skipped
+                        if (timetable[day * 10 + hour] == -1 && dayHasLunchBreak(day)) {
+                            int nextHour = hour + 1;
+                            if (nextHour < 10 && timetable[day * 10 + nextHour] != 0) {
+                                break; // Break if lunch break needs to be skipped
+                            }
+                        }
 
-                // Check if lunch break needs to be skipped
-                if (timetable[day * 10 + hour] == -1 && dayHasLunchBreak(day)) {
-                    int nextHour = hour + 1;
-                    if (nextHour < 10 && timetable[day * 10 + nextHour] != 0) {
-                        availableSubjects.add(code);
+                        // Remove the subject from availableSubjects only if it has no more hours left
+                        if (subjectCodeMap.get(code).getHours() == 0) {
+                            availableSubjects.remove(code);
+                        }
+
+                        break; // Break after successfully scheduling a subject for the hour
                     }
                 }
             }
@@ -80,15 +87,18 @@ public class TimetableGenerator {
             formattedTimetable.append("(day ").append(day + 1).append("):");
             for (int hour = 0; hour < 10; hour++) {
                 byte code = timetable[day * 10 + hour];
+                String subjectName;
                 if (code == -1) {
-                    formattedTimetable.append("\t(Lunch Break)");
+                    subjectName = "Lunch Break";
                 } else {
-                    formattedTimetable.append("\t(").append(code).append(")");
+                    subjectName = subjectCodeMap.get(code).getCode();
                 }
+                formattedTimetable.append("\t(").append(subjectName).append(")");
             }
             formattedTimetable.append("\n");
         }
         return formattedTimetable.toString();
     }
+
 
 }

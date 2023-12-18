@@ -19,7 +19,7 @@ public class Main {
 
         TimetableGenerator generator = new TimetableGenerator(subjects);
         long startTime = System.currentTimeMillis();
-        List<byte[]> timetables = generator.generateTimetables(1000000);
+        List<byte[]> timetables = generator.generateTimetables(1_000_000);
         long endTime = System.currentTimeMillis();
         float elapsedTimeInSeconds = (endTime - startTime) / 1000.0f;
         System.out.println("Elapsed Time: " + elapsedTimeInSeconds + " seconds");
@@ -29,7 +29,7 @@ public class Main {
             byte[] timetable = timetables.get(i);
             String formattedTimetable = generator.formatTimetable(timetable);
             //TODO WTF CO TO SAKRA VYPISUJE
-            System.out.println("Timetable " + (i + 1) + ": " + formattedTimetable);
+            System.out.println("Timetable " + (i + 1) + ": \n" + formattedTimetable);
         }
     }
 }
