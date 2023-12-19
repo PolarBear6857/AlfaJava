@@ -18,7 +18,6 @@ public class TimetableGenerator {
         return map;
     }
 
-
     public List<byte[]> generateTimetables(int numTimetables) {
         List<byte[]> timetables = new ArrayList<>();
         for (int i = 0; i < numTimetables; i++) {
@@ -31,11 +30,14 @@ public class TimetableGenerator {
     private byte[] generateSingleTimetable() {
         byte[] timetable = new byte[50];
         List<Byte> availableSubjects = new ArrayList<>(subjectCodeMap.keySet());
+        Collections.shuffle(availableSubjects);
+
+        int lunchDay = getRandomDayWithLunchBreak();
 
         for (int day = 0; day < 5; day++) {
-            if (dayHasLunchBreak(day)) {
+            if (day == lunchDay) {
                 // Use a special code for lunch break
-                timetable[day * 10 + 4] = -1;
+                timetable[day * 10 + 5] = -1;
             }
 
             for (int hour = 0; hour < 10; hour++) {
@@ -81,6 +83,11 @@ public class TimetableGenerator {
         return day == 0 || day == 2 || day == 4;
     }
 
+    private int getRandomDayWithLunchBreak() {
+        // Return a random day between lesson 5 and 7 for the lunch break
+        return new Random().nextInt(3) * 2 + 1;
+    }
+
     public String formatTimetable(byte[] timetable) {
         StringBuilder formattedTimetable = new StringBuilder();
         for (int day = 0; day < 5; day++) {
@@ -99,6 +106,4 @@ public class TimetableGenerator {
         }
         return formattedTimetable.toString();
     }
-
-
 }

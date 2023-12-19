@@ -19,13 +19,13 @@ public class Main {
 
         TimetableGenerator generator = new TimetableGenerator(subjects);
         long startTime = System.currentTimeMillis();
-        List<byte[]> timetables = generator.generateTimetables(1_000_000);
+        List<byte[]> timetables = generator.generateTimetables(1_000);
         long endTime = System.currentTimeMillis();
         float elapsedTimeInSeconds = (endTime - startTime) / 1000.0f;
         System.out.println("Elapsed Time: " + elapsedTimeInSeconds + " seconds");
         System.out.println("Timetables: " + timetables.size());
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 1; i++) {
             byte[] timetable = timetables.get(i);
             String formattedTimetable = generator.formatTimetable(timetable);
             System.out.println("Timetable " + (i + 1) + ": \n" + formattedTimetable);
