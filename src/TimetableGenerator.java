@@ -35,12 +35,14 @@ public class TimetableGenerator {
         int lunchDay = getRandomDayWithLunchBreak();
 
         for (int day = 0; day < 5; day++) {
-            if (day == lunchDay) {
-                // Use a special code for lunch break
-                timetable[day * 10 + 5] = -1;
-            }
-
             for (int hour = 0; hour < 10; hour++) {
+                // Check if it's time for lunch break
+                if (day == lunchDay && hour == 5) {
+                    // Use a special code for lunch break
+                    timetable[day * 10 + hour] = -1;
+                    continue;
+                }
+
                 // Shuffle available subjects for each hour to get randomness
                 Collections.shuffle(availableSubjects);
 
@@ -49,14 +51,6 @@ public class TimetableGenerator {
                     if (consecutiveHoursConstraintSatisfied(code, timetable, day, hour)) {
                         timetable[day * 10 + hour] = code;
                         subjectCodeMap.get(code).decrementHours();
-
-                        // Check if lunch break needs to be skipped
-                        if (timetable[day * 10 + hour] == -1 && dayHasLunchBreak(day)) {
-                            int nextHour = hour + 1;
-                            if (nextHour < 10 && timetable[day * 10 + nextHour] != 0) {
-                                break; // Break if lunch break needs to be skipped
-                            }
-                        }
 
                         // Remove the subject from availableSubjects only if it has no more hours left
                         if (subjectCodeMap.get(code).getHours() == 0) {
@@ -78,11 +72,6 @@ public class TimetableGenerator {
         return true;
     }
 
-    private boolean dayHasLunchBreak(int day) {
-        // For simplicity, let's assume a lunch break on days 1, 3, and 5
-        return day == 0 || day == 2 || day == 4;
-    }
-
     private int getRandomDayWithLunchBreak() {
         // Return a random day between lesson 5 and 7 for the lunch break
         return new Random().nextInt(3) * 2 + 1;
@@ -98,7 +87,8 @@ public class TimetableGenerator {
                 if (code == -1) {
                     subjectName = "Lunch Break";
                 } else {
-                    subjectName = subjectCodeMap.get(code).getCode();
+                    Subject subject = subjectCodeMap.get(code);
+                    subjectName = (subject != null) ? subject.getCode() : "Unknown Subject";
                 }
                 formattedTimetable.append("\t(").append(subjectName).append(")");
             }
@@ -106,4 +96,5 @@ public class TimetableGenerator {
         }
         return formattedTimetable.toString();
     }
+
 }
