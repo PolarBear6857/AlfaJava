@@ -1,8 +1,8 @@
 import java.util.*;
 
 public class TimetableGenerator {
-    private List<Subject> subjects;
-    private Map<Byte, Subject> subjectCodeMap;
+    private final List<Subject> subjects;
+    private final Map<Byte, Subject> subjectCodeMap;
 
     public TimetableGenerator(List<Subject> subjects) {
         this.subjects = subjects;
