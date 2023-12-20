@@ -5,11 +5,16 @@ public class Subject {
 
     private int remainingHours;
 
+    private String teacher;
+    private String classroom;
+
     public Subject(String name, String code, int hours) {
         this.name = name;
         this.code = code;
         this.hours = hours;
         this.remainingHours = hours;
+        this.teacher = "";
+        this.classroom = "";
     }
 
     // Gettery a Settery pro name, code, hours
@@ -46,5 +51,21 @@ public class Subject {
 
     public void setHours(int hours) {
         this.hours = hours;
+    }
+
+    public String getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(String teacher) {
+        this.teacher = teacher;
+    }
+
+    public String getClassroom() {
+        return classroom;
+    }
+
+    public void setClassroom(String classroom) {
+        this.classroom = classroom;
     }
 }

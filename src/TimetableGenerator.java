@@ -34,34 +34,33 @@ public class TimetableGenerator {
 
         for (int day = 0; day < 5; day++) {
             if (dayHasLunchBreak(day)) {
-                // Use a special code for lunch break
                 timetable[day * 10 + 4] = -1;
             }
 
             for (int hour = 0; hour < 10; hour++) {
-                // Shuffle available subjects for each hour to get randomness
                 Collections.shuffle(availableSubjects);
 
                 for (Byte code : availableSubjects) {
-                    // Check constraints for consecutive hours
                     if (consecutiveHoursConstraintSatisfied(code, timetable, day, hour)) {
                         timetable[day * 10 + hour] = code;
-                        subjectCodeMap.get(code).decrementHours();
 
-                        // Check if lunch break needs to be skipped
+                        Subject subject = subjectCodeMap.get(code);
+                        subject.decrementHours();
+
+                        subject.setClassroom(generateRandomClassroom());
+
                         if (timetable[day * 10 + hour] == -1 && dayHasLunchBreak(day)) {
                             int nextHour = hour + 1;
                             if (nextHour < 10 && timetable[day * 10 + nextHour] != 0) {
-                                break; // Break if lunch break needs to be skipped
+                                break;
                             }
                         }
 
-                        // Remove the subject from availableSubjects only if it has no more hours left
-                        if (subjectCodeMap.get(code).getHours() == 0) {
+                        if (subject.getHours() == 0) {
                             availableSubjects.remove(code);
                         }
 
-                        break; // Break after successfully scheduling a subject for the hour
+                        break;
                     }
                 }
             }
@@ -70,14 +69,17 @@ public class TimetableGenerator {
         return timetable;
     }
 
+    private String generateRandomClassroom() {
+        String[] classrooms = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29"};
+        return classrooms[new Random().nextInt(classrooms.length)];
+    }
+
 
     private boolean consecutiveHoursConstraintSatisfied(byte code, byte[] timetable, int day, int hour) {
-        // Implement your specific constraints for consecutive hours
         return true;
     }
 
     private boolean dayHasLunchBreak(int day) {
-        // For simplicity, let's assume a lunch break on days 1, 3, and 5
         return day == 0 || day == 2 || day == 4;
     }
 
@@ -87,18 +89,40 @@ public class TimetableGenerator {
             formattedTimetable.append("(day ").append(day + 1).append("):");
             for (int hour = 0; hour < 10; hour++) {
                 byte code = timetable[day * 10 + hour];
-                String subjectName;
+                String subjectInfo;
                 if (code == -1) {
-                    subjectName = "Lunch Break";
+                    subjectInfo = "Lunch Break";
                 } else {
-                    subjectName = subjectCodeMap.get(code).getCode();
+                    Subject subject = subjectCodeMap.get(code);
+                    String subjectName = subject.getCode();
+                    String classroom = subject.getClassroom();
+                    subjectInfo = "(" + subjectName + ", " + classroom + ")";
                 }
-                formattedTimetable.append("\t(").append(subjectName).append(")");
+                formattedTimetable.append("\t").append(subjectInfo);
             }
             formattedTimetable.append("\n");
         }
         return formattedTimetable.toString();
     }
 
+    public void timetableEvaluator(List<byte[]> timetables) {
+        Map<byte[], Integer> ohodnoceneRozvrhy = new HashMap<>();
+        for (byte[] b : timetables) {
+            ohodnoceneRozvrhy.put(b, TimetableEvaluator.evaluateTimetable(b, subjectCodeMap));
+        }
+        Map.Entry<byte[], Integer> maxEntry = null;
+        for (Map.Entry<byte[], Integer> entry : ohodnoceneRozvrhy.entrySet()) {
+            if (maxEntry == null || entry.getValue() > maxEntry.getValue()) {
+                maxEntry = entry;
+            }
+        }
+
+        if (maxEntry != null) {
+            System.out.println("Rozvrh s největším skóre: \n" + formatTimetable(maxEntry.getKey()));
+            System.out.println("Skóre: " + maxEntry.getValue());
+        } else {
+            System.out.println("Mapa je prázdná.");
+        }
+    }
 
 }
