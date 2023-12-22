@@ -12,7 +12,6 @@ subjects, rules, and constraints.
     - [Usage](#usage)
 - [Documentation](#documentation)
 - [Contributing](#contributing)
-- [License](#license)
 
 ## Overview
 
@@ -38,6 +37,25 @@ To run the Timetable Generator, ensure that you have the following installed:
 ### Usage
 
 1. Download the repository:
-   [Github](https://www.oracle.com/java/technologies/javase-downloads.html)
+   [Github](https://github.com/PolarBear6857/AlfaJava)
+
+2. Run the jar file located in:
+
+    ```bash
+    ...\Downloads\AlfaJava\out
+
+## Documentation
+
+- [JavaDoc for `TimetableGenerator`](#) *(link-to-be-added)*
+- [JavaDoc for `TimetableEvaluator`](#) *(link-to-be-added)*
+- [JavaDoc for `Subject`](#) *(link-to-be-added)*
+
+Explore the JavaDoc documentation for detailed information about classes, methods, and usage.
+
+## Contributing
+
+Contributions are welcome! If you find issues or have suggestions for improvements, please open an issue or create a pull request.
+
+
 
    
