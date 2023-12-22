@@ -1,2 +1,2 @@
-java -jr Alfa.jar
+java -jar Alfa.jar
 pause
