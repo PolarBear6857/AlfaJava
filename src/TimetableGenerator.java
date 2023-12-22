@@ -1,9 +1,17 @@
 import java.util.*;
 
+/**
+ * The TimetableGenerator class is responsible for generating and evaluating timetables for a given set of subjects.
+ */
 public class TimetableGenerator {
     private final List<Subject> subjects;
     private final Map<Byte, Subject> subjectCodeMap;
 
+    /**
+     * Constructs a TimetableGenerator with the provided list of subjects.
+     *
+     * @param subjects The list of subjects to be used for timetable generation.
+     */
     public TimetableGenerator(List<Subject> subjects) {
         this.subjects = subjects;
         this.subjectCodeMap = createSubjectCodeMap();
@@ -19,6 +27,12 @@ public class TimetableGenerator {
     }
 
 
+    /**
+     * Generates a specified number of timetables.
+     *
+     * @param numTimetables The number of timetables to generate.
+     * @return A list of generated timetables.
+     */
     public List<byte[]> generateTimetables(int numTimetables) {
         List<byte[]> timetables = new ArrayList<>();
         for (int i = 0; i < numTimetables; i++) {
@@ -83,6 +97,12 @@ public class TimetableGenerator {
         return day == 0 || day == 2 || day == 4;
     }
 
+    /**
+     * Formats a timetable into a human-readable string.
+     *
+     * @param timetable The timetable to be formatted.
+     * @return The formatted timetable as a string.
+     */
     public String formatTimetable(byte[] timetable) {
         StringBuilder formattedTimetable = new StringBuilder();
         for (int day = 0; day < 5; day++) {
@@ -105,6 +125,11 @@ public class TimetableGenerator {
         return formattedTimetable.toString();
     }
 
+    /**
+     * Evaluates a list of timetables and prints the timetable with the highest score.
+     *
+     * @param timetables The list of timetables to be evaluated.
+     */
     public void timetableEvaluator(List<byte[]> timetables) {
         Map<byte[], Integer> ohodnoceneRozvrhy = new HashMap<>();
         for (byte[] b : timetables) {

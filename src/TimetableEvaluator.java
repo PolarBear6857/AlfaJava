@@ -1,5 +1,8 @@
 import java.util.*;
 
+/**
+ * The TimetableEvaluator class provides methods for evaluating generated timetables based on specific rules.
+ */
 public class TimetableEvaluator {
 
     private static final int RULE_ONE_PENALTY = 50;
@@ -13,6 +16,13 @@ public class TimetableEvaluator {
     private static final int RULE_NINE_PENALTY = 10;
     private static final int RULE_TEN_BONUS = 15;
 
+    /**
+     * Evaluates a timetable based on predefined rules and returns a penalty score.
+     *
+     * @param timetable      The timetable to be evaluated.
+     * @param subjectCodeMap A map containing subject codes and their corresponding Subject objects.
+     * @return The penalty score for the evaluated timetable.
+     */
     public static int evaluateTimetable(byte[] timetable, Map<Byte, Subject> subjectCodeMap) {
         int penalty = 0;
 

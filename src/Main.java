@@ -5,8 +5,19 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
+/**
+ * The Main class contains the main method to demonstrate multithreaded timetable generation and evaluation.
+ */
 public class Main {
+
+    /**
+     * The main method initializes subjects, creates a TimetableGenerator, generates timetables on multiple threads,
+     * evaluates the generated timetables, and measures the elapsed time for both generation and evaluation.
+     *
+     * @param args The command line arguments (not used in this example).
+     */
     public static void main(String[] args) {
+        // Initialization of subjects
         List<Subject> subjects = new ArrayList<>();
         subjects.add(new Subject("Český jazyk", "ČJ, Mr", 3));
         subjects.add(new Subject("Angličtina", "A, Jz", 4));
@@ -20,8 +31,11 @@ public class Main {
         subjects.add(new Subject("Cvičení ze správy IT", "CIT, Sv", 2));
         subjects.add(new Subject("Webové aplikace", "WA, Na", 3));
         subjects.add(new Subject("Technický projekt", "TP, No", 1));
+
+        // Creating a TimetableGenerator
         TimetableGenerator generator = new TimetableGenerator(subjects);
 
+        // Configuration for multithreaded timetable generation
         int numberOfThreads = 6;
         int timetablesToGenerate = 1_200_000;
 
@@ -31,28 +45,29 @@ public class Main {
 
         long startTime = System.currentTimeMillis();
 
-        // Divide the workload among the threads
         int workloadPerThread = timetablesToGenerate / numberOfThreads;
 
+        // Generating timetables on multiple threads
         for (int i = 0; i < numberOfThreads; i++) {
-
             CompletableFuture<List<byte[]>> future = CompletableFuture.supplyAsync(() ->
                     generator.generateTimetables(workloadPerThread), executorService);
             futures.add(future);
         }
 
-        // Combine results from all threads
+        // Combining results from all threads
         List<byte[]> timetables = futures.stream()
                 .flatMap(future -> future.join().stream())
                 .toList();
 
+        // Measuring elapsed time for timetable generation
         long endTime = System.currentTimeMillis();
         float elapsedTimeInSeconds = (endTime - startTime) / 1000.0f;
 
+        // Printing results for timetable generation
         System.out.println("Timetables: " + timetables.size());
-        System.out.println("Elapsed Time: " + elapsedTimeInSeconds + " seconds");
+        System.out.println("Elapsed Time (Generation): " + elapsedTimeInSeconds + " seconds");
 
-        // Shutdown the executor service
+        // Shutting down the executor service
         executorService.shutdown();
 
         /* TODO původní Singlethreaded
@@ -72,13 +87,15 @@ public class Main {
         }
          */
 
+        // Evaluating generated timetables
         long startTime2 = System.currentTimeMillis();
         System.out.println("------------------------------------------------------------------------");
         generator.timetableEvaluator(timetables);
         long endTime2 = System.currentTimeMillis();
         float elapsedTimeInSeconds2 = (endTime2 - startTime2) / 1000.0f;
-        System.out.println("Elapsed Time: " + elapsedTimeInSeconds2 + " seconds");
+
+        // Printing results for timetable evaluation
+        System.out.println("Elapsed Time (Evaluation): " + elapsedTimeInSeconds2 + " seconds");
         System.out.println("------------------------------------------------------------------------");
     }
 }
-
