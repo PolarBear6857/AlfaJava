@@ -5,15 +5,54 @@ import java.util.*;
  */
 public class TimetableEvaluator {
 
+    /**
+     * The penalty score for the first rule violation.
+     */
     private static final int RULE_ONE_PENALTY = 50;
+
+    /**
+     * The penalty score for the second rule violation.
+     */
     private static final int RULE_TWO_PENALTY = 30;
+
+    /**
+     * The penalty score for the third rule violation.
+     */
     private static final int RULE_THREE_PENALTY = 20;
+
+    /**
+     * The penalty score for the fourth rule violation.
+     */
     private static final int RULE_FOUR_PENALTY = 40;
+
+    /**
+     * The penalty score for the fifth rule violation.
+     */
     private static final int RULE_FIVE_PENALTY = 10;
+
+    /**
+     * The penalty score for the sixth rule violation.
+     */
     private static final int RULE_SIX_PENALTY = 25;
+
+    /**
+     * The penalty score for the seventh rule violation.
+     */
     private static final int RULE_SEVEN_PENALTY = 15;
+
+    /**
+     * The penalty score for the eighth rule violation.
+     */
     private static final int RULE_EIGHT_PENALTY = 5;
+
+    /**
+     * The penalty score for the ninth rule violation.
+     */
     private static final int RULE_NINE_PENALTY = 10;
+
+    /**
+     * The bonus score for the tenth rule.
+     */
     private static final int RULE_TEN_BONUS = 15;
 
     /**
@@ -40,6 +79,12 @@ public class TimetableEvaluator {
         return penalty;
     }
 
+    /**
+     * Applies the first rule to the timetable.
+     *
+     * @param timetable The timetable to be evaluated.
+     * @return The penalty score for the first rule violation.
+     */
     private static int ruleOne(byte[] timetable) {
         int penalty = 0;
 
@@ -50,6 +95,12 @@ public class TimetableEvaluator {
         return penalty;
     }
 
+    /**
+     * Applies the second rule to the timetable.
+     *
+     * @param timetable The timetable to be evaluated.
+     * @return The penalty score for the second rule violation.
+     */
     private static int ruleTwo(byte[] timetable) {
         int penalty = 0;
 
@@ -69,6 +120,12 @@ public class TimetableEvaluator {
         return penalty;
     }
 
+    /**
+     * Applies the third rule to the timetable.
+     *
+     * @param timetable The timetable to be evaluated.
+     * @return The penalty score for the third rule violation.
+     */
     private static int ruleThree(byte[] timetable) {
         int penalty = 0;
 
@@ -88,6 +145,12 @@ public class TimetableEvaluator {
         return penalty;
     }
 
+    /**
+     * Applies the fourth rule to the timetable.
+     *
+     * @param timetable The timetable to be evaluated.
+     * @return The penalty score for the fourth rule violation.
+     */
     private static int ruleFour(byte[] timetable) {
         int penalty = 0;
 
@@ -101,6 +164,12 @@ public class TimetableEvaluator {
         return penalty;
     }
 
+    /**
+     * Applies the fifth rule to the timetable.
+     *
+     * @param timetable The timetable to be evaluated.
+     * @return The penalty score for the fifth rule violation.
+     */
     private static int ruleFive(byte[] timetable) {
         int penalty = 0;
 
@@ -114,6 +183,13 @@ public class TimetableEvaluator {
         return penalty;
     }
 
+    /**
+     * Applies the sixth rule to the timetable.
+     *
+     * @param timetable      The timetable to be evaluated.
+     * @param subjectCodeMap A map containing subject codes and their corresponding Subject objects.
+     * @return The penalty score for the sixth rule violation.
+     */
     private static int ruleSix(byte[] timetable, Map<Byte, Subject> subjectCodeMap) {
         int penalty = 0;
 
@@ -144,7 +220,13 @@ public class TimetableEvaluator {
         return penalty;
     }
 
-
+    /**
+     * Applies the seventh rule to the timetable.
+     *
+     * @param timetable      The timetable to be evaluated.
+     * @param subjectCodeMap A map containing subject codes and their corresponding Subject objects.
+     * @return The penalty score for the seventh rule violation.
+     */
     private static int ruleSeven(byte[] timetable, Map<Byte, Subject> subjectCodeMap) {
         int penalty = 0;
 
@@ -166,33 +248,65 @@ public class TimetableEvaluator {
         return penalty;
     }
 
+    /**
+     * Applies the eighth rule to the timetable.
+     *
+     * @param timetable The timetable to be evaluated.
+     * @return The penalty score for the eighth rule violation.
+     */
     private static int ruleEight(byte[] timetable) {
         int penalty = 0;
 
         return penalty;
     }
 
+    /**
+     * Applies the ninth rule to the timetable.
+     *
+     * @param timetable The timetable to be evaluated.
+     * @return The penalty score for the ninth rule violation.
+     */
     private static int ruleNine(byte[] timetable) {
         int penalty = 0;
 
         return penalty;
     }
 
+    /**
+     * Applies the tenth rule to the timetable.
+     *
+     * @param timetable The timetable to be evaluated.
+     * @return The bonus score for the tenth rule.
+     */
     private static int ruleTen(byte[] timetable) {
         int bonus = 0;
 
         return bonus;
     }
 
+    /**
+     * Finds the lunch hour for a given day in the timetable.
+     *
+     * @param timetable The timetable to be evaluated.
+     * @param day       The day for which to find the lunch hour.
+     * @return The lunch hour for the given day.
+     */
     private static int findLunchHour(byte[] timetable, int day) {
         for (int hour = 4; hour < 8; hour++) {
             if (timetable[day * 10 + hour] == -1) {
                 return hour;
             }
         }
-        return (byte) -1;
+        return -1;
     }
 
+    /**
+     * Counts the number of occupied hours in a given day of the timetable.
+     *
+     * @param timetable The timetable to be evaluated.
+     * @param day       The day for which to count the occupied hours.
+     * @return The number of occupied hours in the given day.
+     */
     private static int countDailyHours(byte[] timetable, int day) {
         int count = 0;
         for (int hour = 0; hour < 10; hour++) {
@@ -203,12 +317,23 @@ public class TimetableEvaluator {
         return count;
     }
 
+    /**
+     * Retrieves the number of hours for a given subject.
+     *
+     * @param subject The subject for which to retrieve the number of hours.
+     * @return The number of hours for the given subject.
+     */
     private static int getClassHours(Subject subject) {
         return subject.getHours();
     }
 
+    /**
+     * Checks if a given subject is a math subject.
+     *
+     * @param subject The subject to be checked.
+     * @return True if the subject is a math subject, false otherwise.
+     */
     private static boolean isMathSubject(Subject subject) {
         return "M, Hr".equals(subject.getCode());
     }
-
 }
